@@ -1,4 +1,4 @@
-package com.example.SpringJPA.JPA.domain;
+package com.example.SpringJPA.JPA.domain.entities;
 
 
 import jakarta.persistence.*;
@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "authors")
-public class Author {
+public class AuthorEntity {
 
     @Id
 //    auto assign the id on creating of new author enititi

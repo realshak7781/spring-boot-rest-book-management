@@ -41,6 +41,6 @@ docker-compose up -d
 | `POST` | `/books` | Create a new book |
 | `GET` | `/books` | Retrieve all books |
 | `GET` | `/authors` | Retrieve all authors |
-| `DELETE` | `/authors/{id}` | Delete an author |
+| `DELETE` | `/authors/{id}` | Delete an authorEntity |
 
 ---

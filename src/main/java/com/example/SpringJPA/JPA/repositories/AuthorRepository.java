@@ -1,19 +1,12 @@
 package com.example.SpringJPA.JPA.repositories;
 
-import com.example.SpringJPA.JPA.domain.Author;
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.example.SpringJPA.JPA.domain.entities.AuthorEntity;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 
 @Repository
-public interface AuthorRepository extends CrudRepository<Author, Long> {
+public interface AuthorRepository extends CrudRepository<AuthorEntity, Long> {
 
-    Iterable<Author> ageLessThan(int age);
-
-
-//    using the HQL query Lang
-    @Query("Select a from Author a where a.age > ?1")
-    Iterable<Author> getAuthorsWithAgeGreaterThan(int age);
 }

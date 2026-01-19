@@ -17,9 +17,9 @@ import lombok.NoArgsConstructor;
 public class AuthorEntity {
 
     @Id
-//    auto assign the id on creating of new author enititi
+//    auto assign the id on creating of new author entity
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "author_id_seq")
-    private long id;
+    private Long id;
     private String name;
     private Integer age;
 }

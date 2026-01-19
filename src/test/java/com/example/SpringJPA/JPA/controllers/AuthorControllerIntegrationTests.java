@@ -40,7 +40,11 @@ public class AuthorControllerIntegrationTests {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(authorJsonA)
         ).andExpect(
-                MockMvcResultMatchers.status().isCreated()
+                MockMvcResultMatchers.jsonPath("$.id").isNumber()
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.name").value(testAuthorA.getName())
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.age").value(testAuthorA.getAge())
         );
     }
 }

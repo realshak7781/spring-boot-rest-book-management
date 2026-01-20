@@ -63,4 +63,14 @@ public class BookControllerIntegrationTests {
                         MockMvcResultMatchers.jsonPath("$.title").value(bookDto.getTitle())
                 );
     }
+
+    @Test
+    public void testThatGetAllBooksSuccessfullyReturnHttp200Ok() throws Exception {
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/books")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isOk()
+        );
+    }
 }

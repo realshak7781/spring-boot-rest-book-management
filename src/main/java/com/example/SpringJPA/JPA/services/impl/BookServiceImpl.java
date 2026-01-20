@@ -16,6 +16,7 @@ public class BookServiceImpl implements BookService {
     public BookServiceImpl(BookRepository bookRepository) {
         this.bookRepository = bookRepository;
     }
+
     @Override
     public BookEntity createBook(String isbn, BookEntity bookEntity) {
         bookEntity.setIsbn(isbn);

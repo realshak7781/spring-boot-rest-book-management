@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.awt.print.Book;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 public class BookController {
@@ -27,5 +29,14 @@ public class BookController {
         BookEntity savedBookEntity=bookService.createBook(isbn,bookEntity);
 
         return new ResponseEntity<>(bookMapper.mapTo(savedBookEntity),HttpStatus.CREATED);
+    }
+
+    @GetMapping(path = "/books")
+    public List<BookDto> getAllBooks() {
+        List<BookEntity> books = bookService.findAll();
+
+        return books.stream()
+                .map(bookMapper::mapTo)
+                .collect(Collectors.toList());
     }
 }

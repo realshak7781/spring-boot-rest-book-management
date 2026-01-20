@@ -47,4 +47,14 @@ public class AuthorControllerIntegrationTests {
                 MockMvcResultMatchers.jsonPath("$.age").value(testAuthorA.getAge())
         );
     }
+
+    @Test
+    public void testThatfindAllAuthorSuccessfullyReturnHttp200() throws Exception {
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/authors")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isOk()
+        );
+    }
 }

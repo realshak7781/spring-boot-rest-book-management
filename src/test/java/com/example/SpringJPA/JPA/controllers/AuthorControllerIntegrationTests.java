@@ -2,6 +2,7 @@ package com.example.SpringJPA.JPA.controllers;
 
 import com.example.SpringJPA.JPA.TestDataUtil;
 import com.example.SpringJPA.JPA.domain.entities.AuthorEntity;
+import com.example.SpringJPA.JPA.services.AuthorService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -23,10 +24,12 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 public class AuthorControllerIntegrationTests {
     private final MockMvc mockMvc;
     private final ObjectMapper objectMapper;
+    private final AuthorService authorService;
 
     @Autowired
-    public AuthorControllerIntegrationTests(MockMvc mockMvc) {
+    public AuthorControllerIntegrationTests(MockMvc mockMvc, AuthorService authorService) {
         this.mockMvc = mockMvc;
+        this.authorService = authorService;
         this.objectMapper = new ObjectMapper();
     }
 
@@ -55,6 +58,21 @@ public class AuthorControllerIntegrationTests {
                         .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(
                 MockMvcResultMatchers.status().isOk()
+        );
+    }
+
+    @Test
+    public void testThatFindAllSuccessfullyReturnsAllAuthors() throws Exception {
+        AuthorEntity testAuthorA = TestDataUtil.createAuthorA();
+        authorService.createAuthor(testAuthorA);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/authors")
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$[0].id").isNumber()
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$[0].name").value(testAuthorA.getName())
         );
     }
 }

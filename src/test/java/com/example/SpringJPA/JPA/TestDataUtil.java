@@ -1,5 +1,7 @@
 package com.example.SpringJPA.JPA;
 
+import com.example.SpringJPA.JPA.domain.dto.AuthorDto;
+import com.example.SpringJPA.JPA.domain.dto.BookDto;
 import com.example.SpringJPA.JPA.domain.entities.AuthorEntity;
 import com.example.SpringJPA.JPA.domain.entities.BookEntity;
 
@@ -34,6 +36,14 @@ public class TestDataUtil {
                 .isbn("978-1-2345-6789-0")
                 .title("The Life of Pablo")
                 .authorEntity(authorEntity)
+                .build();
+    }
+
+    public static BookDto createBookDtoA(final AuthorDto authorDto){
+        return BookDto.builder()
+                .isbn("978-1-2345-6789-0")
+                .title("The Life of Pablo")
+                .authorDto(authorDto)
                 .build();
     }
 

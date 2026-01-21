@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.awt.print.Book;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -38,5 +39,14 @@ public class BookController {
         return books.stream()
                 .map(bookMapper::mapTo)
                 .collect(Collectors.toList());
+    }
+
+    @GetMapping(path = "/books/{isbn}")
+    public ResponseEntity<BookDto> findBookByISBN(@PathVariable String isbn) {
+        Optional<BookEntity> bookObject=bookService.findBookByIsbn(isbn);
+        if(bookObject.isPresent()) {
+            return new ResponseEntity<>(bookMapper.mapTo(bookObject.get()), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }

@@ -105,4 +105,19 @@ public class BookControllerIntegrationTests {
                 MockMvcResultMatchers.jsonPath("$[" + idx + "].title").value(testBookC.getTitle())
         );
     }
+
+    @Test
+    public void testThatFindBookByIsbnSuccessfullyReturnHttp200() throws Exception {
+        BookEntity testBookC = TestDataUtil.createBookC(null);
+        testBookC=bookService.createBook(testBookC.getIsbn(), testBookC);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/books/" + testBookC.getIsbn())
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isOk()
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.isbn").value(testBookC.getIsbn())
+        );
+    }
 }

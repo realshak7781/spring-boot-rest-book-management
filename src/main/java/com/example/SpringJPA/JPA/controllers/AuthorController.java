@@ -46,4 +46,8 @@ public class AuthorController {
 
         return new ResponseEntity<>(authorMapper.mapTo(authorEntity), HttpStatus.OK);
     }
+
+
+//    Creating the FUll update method for the authors
+
 }

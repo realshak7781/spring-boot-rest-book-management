@@ -6,6 +6,7 @@ import com.example.SpringJPA.JPA.services.AuthorService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -28,5 +29,12 @@ public class AuthorServiceImpl implements AuthorService {
 //        NEEDS PAGINATION TO AVOID CRASHING
         return StreamSupport.stream(authorRepository.findAll().spliterator(), false)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public AuthorEntity findAuthorById(Long id) {
+       Optional<AuthorEntity> authorEntity=authorRepository.findById(id);
+
+       return authorEntity.orElse(null);
     }
 }

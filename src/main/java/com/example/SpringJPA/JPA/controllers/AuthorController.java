@@ -6,10 +6,7 @@ import com.example.SpringJPA.JPA.mappers.AuthorMapper;
 import com.example.SpringJPA.JPA.services.AuthorService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,6 +30,7 @@ public class AuthorController {
         return new ResponseEntity<>(authorMapper.mapTo(savedAuthorEntity), HttpStatus.CREATED);
       }
 
+//      get all authors method
       @GetMapping(path = "/authors")
      public List<AuthorDto> listAuthors(){
         List<AuthorEntity> authors = authorService.findAll();
@@ -41,4 +39,11 @@ public class AuthorController {
                 .collect(Collectors.toList());
      }
 
+//     Get author with an id
+    @GetMapping(path = "/authors/{id}")
+    public ResponseEntity<AuthorDto> getAuthor(@PathVariable Long id){
+        AuthorEntity authorEntity=authorService.findAuthorById(id);
+
+        return new ResponseEntity<>(authorMapper.mapTo(authorEntity), HttpStatus.OK);
+    }
 }

@@ -75,4 +75,19 @@ public class AuthorControllerIntegrationTests {
                 MockMvcResultMatchers.jsonPath("$[0].name").value(testAuthorA.getName())
         );
     }
+
+    @Test
+    public void testThatFindAuthorByIdSuccessfullyReturnHttp200() throws Exception {
+        AuthorEntity testAuthorEntity= TestDataUtil.createAuthorB();
+        testAuthorEntity=authorService.createAuthor(testAuthorEntity);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/authors/" + testAuthorEntity.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isOk()
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.id").value(testAuthorEntity.getId())
+        );
+    }
 }

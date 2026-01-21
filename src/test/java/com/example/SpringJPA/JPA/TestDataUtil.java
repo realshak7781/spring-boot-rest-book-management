@@ -17,7 +17,7 @@ public class TestDataUtil {
 
     public static AuthorEntity createAuthorB(){
         return AuthorEntity.builder()
-                .name("Cristiano Ronaldo")
+                .name("Frank Herbert")
                 .age(40)
                 .build();
     }

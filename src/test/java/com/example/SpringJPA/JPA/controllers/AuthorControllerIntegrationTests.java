@@ -98,7 +98,8 @@ public class AuthorControllerIntegrationTests {
         AuthorEntity testAuthorEntity= TestDataUtil.createAuthorA();
         testAuthorEntity=authorService.createAuthor(testAuthorEntity);
 
-        String testAuthorJson=objectMapper.writeValueAsString(TestDataUtil.createAuthorDto());
+        AuthorDto testAuthorDto = TestDataUtil.createAuthorDto();
+        String testAuthorJson=objectMapper.writeValueAsString(testAuthorDto);
 
         mockMvc.perform(
                 MockMvcRequestBuilders.put("/authors/" + testAuthorEntity.getId())
@@ -106,6 +107,10 @@ public class AuthorControllerIntegrationTests {
                         .content(testAuthorJson)
         ).andExpect(
                 MockMvcResultMatchers.status().isOk()
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.name").value(testAuthorDto.getName())
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.age").value(testAuthorDto.getAge())
         );
     }
 }

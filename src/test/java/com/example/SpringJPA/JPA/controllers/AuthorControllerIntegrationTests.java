@@ -98,7 +98,7 @@ public class AuthorControllerIntegrationTests {
         AuthorEntity testAuthorEntity= TestDataUtil.createAuthorA();
         testAuthorEntity=authorService.createAuthor(testAuthorEntity);
 
-        AuthorDto testAuthorDto = TestDataUtil.createAuthorDto();
+        AuthorDto testAuthorDto = TestDataUtil.createAuthorDtoA();
         String testAuthorJson=objectMapper.writeValueAsString(testAuthorDto);
 
         mockMvc.perform(

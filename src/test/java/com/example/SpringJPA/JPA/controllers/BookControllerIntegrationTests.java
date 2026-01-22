@@ -83,7 +83,7 @@ public class BookControllerIntegrationTests {
     @Test
     public void testThatFindAllSuccessfullyReturnsAllBooks() throws Exception {
         BookEntity testBookC = TestDataUtil.createBookC(null);
-        bookService.createBook(testBookC.getIsbn(), testBookC);
+        bookService.createUpdateBook(testBookC.getIsbn(), testBookC);
 
         List<BookEntity> books = bookService.findAll();
         int idx=-1;
@@ -109,7 +109,7 @@ public class BookControllerIntegrationTests {
     @Test
     public void testThatFindBookByIsbnSuccessfullyReturnHttp200() throws Exception {
         BookEntity testBookC = TestDataUtil.createBookC(null);
-        testBookC=bookService.createBook(testBookC.getIsbn(), testBookC);
+        testBookC=bookService.createUpdateBook(testBookC.getIsbn(), testBookC);
 
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/books/" + testBookC.getIsbn())

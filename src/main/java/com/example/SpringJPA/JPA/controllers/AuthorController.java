@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.awt.print.Book;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -48,6 +49,16 @@ public class AuthorController {
     }
 
 
-//    Creating the FUll update method for the authors
+//    Creating the FUll update method for the author
+    @PutMapping(path = "/authors/{id}")
+    public ResponseEntity<AuthorDto> updateAuthor(@PathVariable Long id,@RequestBody AuthorDto authorDto){
+        if(!authorService.isExists(id)){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
 
+        authorDto.setId(id);
+        AuthorEntity authorEntity = authorMapper.mapFrom(authorDto);
+        AuthorEntity savedAuthorEntity = authorService.createAuthor(authorEntity);
+        return new ResponseEntity<>(authorMapper.mapTo(savedAuthorEntity), HttpStatus.OK);
+    }
 }

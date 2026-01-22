@@ -9,4 +9,6 @@ public interface AuthorService {
     List<AuthorEntity> findAll();
 
     AuthorEntity findAuthorById(Long id);
+
+    boolean isExists(Long id);
 }

@@ -4,6 +4,7 @@ package com.example.SpringJPA.JPA.controllers;
 import com.example.SpringJPA.JPA.TestDataUtil;
 import com.example.SpringJPA.JPA.domain.dto.BookDto;
 import com.example.SpringJPA.JPA.domain.entities.BookEntity;
+import com.example.SpringJPA.JPA.mappers.BookMapper;
 import com.example.SpringJPA.JPA.services.BookService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -120,4 +121,27 @@ public class BookControllerIntegrationTests {
                 MockMvcResultMatchers.jsonPath("$.isbn").value(testBookC.getIsbn())
         );
     }
+
+    @Test
+    public void testThatFullUpateBookSuccessfullyReturn200Ok() throws Exception {
+//        we are checking the data already exists and should return ok
+         BookEntity testBookD = TestDataUtil.createBookD(null);
+         testBookD=bookService.createUpdateBook(testBookD.getIsbn(), testBookD);
+         BookDto testBookDto=TestDataUtil.createBookDtoD(null);
+
+         String bookDtoJson=objectMapper.writeValueAsString(testBookDto);
+
+         mockMvc.perform(
+                 MockMvcRequestBuilders.put("/books/" + testBookDto.getIsbn())
+                         .contentType(MediaType.APPLICATION_JSON)
+                         .content(bookDtoJson)
+         ).andExpect(
+                 MockMvcResultMatchers.status().isOk()
+         ).andExpect(
+                 MockMvcResultMatchers.jsonPath("$.isbn").value(testBookDto.getIsbn())
+         ).andExpect(
+                 MockMvcResultMatchers.jsonPath("$.title").value(testBookDto.getTitle())
+         );
+    }
 }
+

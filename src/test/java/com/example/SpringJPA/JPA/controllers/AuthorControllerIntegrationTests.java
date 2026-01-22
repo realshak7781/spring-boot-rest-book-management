@@ -1,6 +1,7 @@
 package com.example.SpringJPA.JPA.controllers;
 
 import com.example.SpringJPA.JPA.TestDataUtil;
+import com.example.SpringJPA.JPA.domain.dto.AuthorDto;
 import com.example.SpringJPA.JPA.domain.entities.AuthorEntity;
 import com.example.SpringJPA.JPA.services.AuthorService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -10,6 +11,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -88,6 +90,22 @@ public class AuthorControllerIntegrationTests {
                 MockMvcResultMatchers.status().isOk()
         ).andExpect(
                 MockMvcResultMatchers.jsonPath("$.id").value(testAuthorEntity.getId())
+        );
+    }
+
+    @Test
+    public void testThatUpdateAuthorSuccessfullyReturnHttp200() throws Exception {
+        AuthorEntity testAuthorEntity= TestDataUtil.createAuthorA();
+        testAuthorEntity=authorService.createAuthor(testAuthorEntity);
+
+        String testAuthorJson=objectMapper.writeValueAsString(TestDataUtil.createAuthorDto());
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.put("/authors/" + testAuthorEntity.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(testAuthorJson)
+        ).andExpect(
+                MockMvcResultMatchers.status().isOk()
         );
     }
 }

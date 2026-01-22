@@ -62,4 +62,19 @@ public class TestDataUtil {
                 .authorEntity(authorEntity)
                 .build();
     }
+
+    public static AuthorDto createAuthorDto() {
+        return AuthorDto.builder()
+                .name("Sharique Akhtar")
+                .age(22)
+                .build();
+    }
+
+    public static AuthorEntity createAuthorD() {
+        return AuthorEntity
+                .builder()
+                .name("Sharique Akhtar")
+                .age(22)
+                .build();
+    }
 }

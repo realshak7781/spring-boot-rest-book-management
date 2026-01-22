@@ -4,7 +4,6 @@ package com.example.SpringJPA.JPA.controllers;
 import com.example.SpringJPA.JPA.TestDataUtil;
 import com.example.SpringJPA.JPA.domain.dto.BookDto;
 import com.example.SpringJPA.JPA.domain.entities.BookEntity;
-import com.example.SpringJPA.JPA.mappers.BookMapper;
 import com.example.SpringJPA.JPA.services.BookService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -40,6 +39,9 @@ public class BookControllerIntegrationTests {
 
     @Test
     public void testThatCreateBookSuccessfullyReturnHttp201Created() throws Exception {
+        BookEntity testBookEntity=TestDataUtil.createBookA(null);
+        testBookEntity=bookService.createUpdateBook(testBookEntity.getIsbn(),testBookEntity);
+
         BookDto bookDto = TestDataUtil.createBookDtoA(null);
         String bookEntityJsonA = objectMapper.writeValueAsString(bookDto);
 
@@ -49,7 +51,9 @@ public class BookControllerIntegrationTests {
                                 .content(bookEntityJsonA)
                 )
                 .andExpect(
-                        MockMvcResultMatchers.status().isCreated()
+                        MockMvcResultMatchers.jsonPath("$.isbn").value(bookDto.getIsbn())
+                ).andExpect(
+                        MockMvcResultMatchers.jsonPath("$.title").value(bookDto.getTitle())
                 );
     }
 

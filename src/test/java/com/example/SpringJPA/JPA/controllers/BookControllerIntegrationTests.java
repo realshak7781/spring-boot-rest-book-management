@@ -3,7 +3,9 @@ package com.example.SpringJPA.JPA.controllers;
 
 import com.example.SpringJPA.JPA.TestDataUtil;
 import com.example.SpringJPA.JPA.domain.dto.BookDto;
+import com.example.SpringJPA.JPA.domain.entities.AuthorEntity;
 import com.example.SpringJPA.JPA.domain.entities.BookEntity;
+import com.example.SpringJPA.JPA.services.AuthorService;
 import com.example.SpringJPA.JPA.services.BookService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -18,7 +20,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import javax.print.attribute.standard.Media;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
@@ -28,13 +34,14 @@ public class BookControllerIntegrationTests {
     private final MockMvc mockMvc;
     private final ObjectMapper objectMapper;
     private BookService bookService;
-
+    private AuthorService authorService;
 
     @Autowired
-    public BookControllerIntegrationTests(MockMvc mockMvc, ObjectMapper objectMapper,BookService bookService) {
+    public BookControllerIntegrationTests(MockMvc mockMvc, ObjectMapper objectMapper,BookService bookService,AuthorService authorService) {
         this.mockMvc = mockMvc;
         this.objectMapper = objectMapper;
         this.bookService = bookService;
+        this.authorService = authorService;
     }
 
     @Test
@@ -182,6 +189,26 @@ public class BookControllerIntegrationTests {
         ).andExpect(
                 MockMvcResultMatchers.status().isOk()
         );
+    }
+
+//    writing a unit test to verify whether the new Many to one cascade works or not
+    @Test
+    public void testThatDeleteBookDoesNotDeleteAuthor() throws Exception{
+        AuthorEntity author=TestDataUtil.createAuthorA();
+        author=authorService.createAuthor(author);
+        BookEntity book=TestDataUtil.createBookA(author);
+        bookService.createUpdateBook(book.getIsbn(),book);
+        book.setAuthorEntity(author);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.delete("/books/"+book.getIsbn())
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isOk()
+        );
+
+        assertFalse(bookService.isExists(book.getIsbn())); // Book gone? YES.
+        assertTrue(authorService.isExists(author.getId()));
     }
 }
 

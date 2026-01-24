@@ -20,7 +20,7 @@ public class BookEntity {
     private String isbn;
     private String title;
 //    using a foreign key
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "author_id")
     private AuthorEntity authorEntity;
 }

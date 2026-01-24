@@ -175,8 +175,13 @@ public class BookControllerIntegrationTests {
     public void testThatDeleteBookSuccessfullyReturn200Ok() throws Exception {
         BookEntity testBookE = TestDataUtil.createBookE(null);
         bookService.createUpdateBook(testBookE.getIsbn(), testBookE);
-        BookDto testBookDto=TestDataUtil.createBookDtoE(null);
 
+        mockMvc.perform(
+                MockMvcRequestBuilders.delete("/books/"+testBookE.getIsbn()).
+                        contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.status().isOk()
+        );
     }
 }
 

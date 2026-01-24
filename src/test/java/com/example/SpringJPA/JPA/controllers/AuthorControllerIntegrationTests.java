@@ -4,14 +4,12 @@ import com.example.SpringJPA.JPA.TestDataUtil;
 import com.example.SpringJPA.JPA.domain.dto.AuthorDto;
 import com.example.SpringJPA.JPA.domain.entities.AuthorEntity;
 import com.example.SpringJPA.JPA.services.AuthorService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -115,5 +113,25 @@ public class AuthorControllerIntegrationTests {
         );
     }
 
+    @Test
+    public void testThatPartialUpdateExistingAuthorReturnsHttpStatus200k() throws Exception {
+        AuthorEntity testAuthorEntity= TestDataUtil.createAuthorF();
+        testAuthorEntity=authorService.createAuthor(testAuthorEntity);
 
+        AuthorDto testAuthorDto= TestDataUtil.createAuthorDtoF();
+        testAuthorDto.setName("Robert Downey Jr.");
+        String testAuthorJson = objectMapper.writeValueAsString(testAuthorDto);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.patch("/authors/" + testAuthorEntity.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(testAuthorJson)
+        ).andExpect(
+                MockMvcResultMatchers.status().isOk()
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.name").value(testAuthorDto.getName())
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.age").value(testAuthorDto.getAge())
+        );
+    }
 }

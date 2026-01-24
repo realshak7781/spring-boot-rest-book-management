@@ -166,4 +166,11 @@ public class TestDataUtil {
                 .authorDto(authorDto)
                 .build();
     }
+
+    public static AuthorDto createAuthorDtoF() {
+        return AuthorDto.builder()
+                .name("Robert C. Martin")
+                .age(70)
+                .build();
+    }
 }

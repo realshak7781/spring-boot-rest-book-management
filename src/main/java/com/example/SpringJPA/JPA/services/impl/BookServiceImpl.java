@@ -1,5 +1,6 @@
 package com.example.SpringJPA.JPA.services.impl;
 
+import com.example.SpringJPA.JPA.domain.dto.BookDto;
 import com.example.SpringJPA.JPA.domain.entities.BookEntity;
 import com.example.SpringJPA.JPA.repositories.BookRepository;
 import com.example.SpringJPA.JPA.services.BookService;
@@ -38,5 +39,15 @@ public class BookServiceImpl implements BookService {
     @Override
     public boolean isExists(String isbn) {
         return bookRepository.existsById(isbn);
+    }
+
+    @Override
+    public BookEntity updatePartial(String isbn, BookEntity bookEntity) {
+        bookEntity.setIsbn(isbn);
+
+        return bookRepository.findById(isbn).map(existingBook ->{
+            Optional.ofNullable(bookEntity.getTitle()).ifPresent(existingBook::setTitle);
+            return bookRepository.save(existingBook);
+        }).orElseThrow(() -> new RuntimeException("Book doesn't Exist."));
     }
 }

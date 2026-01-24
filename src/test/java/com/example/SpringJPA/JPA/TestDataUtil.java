@@ -88,6 +88,13 @@ public class TestDataUtil {
                 .build();
     }
 
+    public static AuthorDto createAuthorDtoF() {
+        return AuthorDto.builder()
+                .name("Robert C. Martin")
+                .age(70)
+                .build();
+    }
+
     // ---------------- BOOKS (ENTITIES) ----------------
 
     public static BookEntity createBookA(final AuthorEntity authorEntity){
@@ -167,10 +174,11 @@ public class TestDataUtil {
                 .build();
     }
 
-    public static AuthorDto createAuthorDtoF() {
-        return AuthorDto.builder()
-                .name("Robert C. Martin")
-                .age(70)
+    public static BookDto createBookDtoE(final AuthorDto authorDto){
+        return BookDto.builder()
+                .isbn("978-0-321-12521-7")
+                .title("Domain-Driven Design")
+                .authorDto(authorDto)
                 .build();
     }
 }

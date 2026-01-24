@@ -147,5 +147,28 @@ public class BookControllerIntegrationTests {
                  MockMvcResultMatchers.jsonPath("$.title").value(testBookDto.getTitle())
          );
     }
+
+
+    @Test
+    public void testThatPartialUpdateBookSuccessfullyReturn200Ok() throws Exception {
+        BookEntity testBookEntity = TestDataUtil.createBookE(null);
+        bookService.createUpdateBook(testBookEntity.getIsbn(), testBookEntity);
+
+        BookDto testBookDto=TestDataUtil.createBookDtoE(null);
+        String testBookDtoJson=objectMapper.writeValueAsString(testBookDto);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.patch("/books/" + testBookEntity.getIsbn())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(testBookDtoJson)
+
+        ).andExpect(
+                MockMvcResultMatchers.status().isOk()
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.isbn").value(testBookDto.getIsbn())
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.title").value(testBookDto.getTitle())
+        );
+    }
 }
 

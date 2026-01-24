@@ -134,4 +134,27 @@ public class AuthorControllerIntegrationTests {
                 MockMvcResultMatchers.jsonPath("$.age").value(testAuthorDto.getAge())
         );
     }
+
+
+    @Test
+    public void testThatDeleteBookSuccessfullyReturnHttp200k() throws Exception {
+        AuthorEntity testAuthorEntity= TestDataUtil.createAuthorA();
+        authorService.createAuthor(testAuthorEntity);
+        AuthorDto testAuthorDto= TestDataUtil.createAuthorDtoA();
+        String testAuthorJson=objectMapper.writeValueAsString(testAuthorDto);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.delete("/authors/"+testAuthorEntity.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(testAuthorJson)
+        ).andExpect(
+                MockMvcResultMatchers.status().isOk()
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.id").value(testAuthorEntity.getId())
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.name").value(testAuthorDto.getName())
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.age").value(testAuthorDto.getAge())
+        );
+    }
 }

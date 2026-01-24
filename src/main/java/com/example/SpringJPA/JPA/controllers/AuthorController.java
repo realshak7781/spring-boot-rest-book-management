@@ -72,4 +72,15 @@ public class AuthorController {
         AuthorEntity partialUpdatedAuthorEntity=authorService.updatePartial(id,authorEntity);
         return new ResponseEntity<>(authorMapper.mapTo(partialUpdatedAuthorEntity), HttpStatus.OK);
     }
+
+//    let's implement the delete functionality
+    @DeleteMapping(path = "/authors/{id}")
+    public ResponseEntity<AuthorDto> deleteAuthor(@PathVariable Long id){
+        if(!authorService.isExists(id)){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+//        if author Exists please delete it
+        AuthorEntity deletedAuthorEntity=authorService.deleteAuthor(id);
+        return new ResponseEntity<>(authorMapper.mapTo(deletedAuthorEntity), HttpStatus.OK);
+    }
 }

@@ -170,5 +170,13 @@ public class BookControllerIntegrationTests {
                 MockMvcResultMatchers.jsonPath("$.title").value(testBookDto.getTitle())
         );
     }
+
+    @Test
+    public void testThatDeleteBookSuccessfullyReturn200Ok() throws Exception {
+        BookEntity testBookE = TestDataUtil.createBookE(null);
+        bookService.createUpdateBook(testBookE.getIsbn(), testBookE);
+        BookDto testBookDto=TestDataUtil.createBookDtoE(null);
+
+    }
 }
 

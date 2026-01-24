@@ -141,12 +141,10 @@ public class AuthorControllerIntegrationTests {
         AuthorEntity testAuthorEntity= TestDataUtil.createAuthorA();
         authorService.createAuthor(testAuthorEntity);
         AuthorDto testAuthorDto= TestDataUtil.createAuthorDtoA();
-        String testAuthorJson=objectMapper.writeValueAsString(testAuthorDto);
 
         mockMvc.perform(
                 MockMvcRequestBuilders.delete("/authors/"+testAuthorEntity.getId())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(testAuthorJson)
         ).andExpect(
                 MockMvcResultMatchers.status().isOk()
         ).andExpect(

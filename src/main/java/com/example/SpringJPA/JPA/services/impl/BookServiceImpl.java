@@ -1,11 +1,11 @@
 package com.example.SpringJPA.JPA.services.impl;
 
-import com.example.SpringJPA.JPA.domain.dto.BookDto;
 import com.example.SpringJPA.JPA.domain.entities.BookEntity;
 import com.example.SpringJPA.JPA.repositories.BookRepository;
 import com.example.SpringJPA.JPA.services.BookService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -29,6 +29,11 @@ public class BookServiceImpl implements BookService {
         Iterable<BookEntity> books = bookRepository.findAll();
         return StreamSupport.stream(books.spliterator(), false)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Page<BookEntity> findAll(Pageable pageable) {
+        return bookRepository.findAll(pageable);
     }
 
     @Override
